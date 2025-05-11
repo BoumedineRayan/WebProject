@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    
 }
 
 .logo-img {
@@ -70,7 +71,7 @@ body {
 
 .blurred-image-container::before {
     content: "";
-    background-image: url('../assets/ima1.jpg');
+    background-image: var(--bg-url, url('../assets/ima1.jpg')); /* fallback if not defined */
     background-size: cover;
     background-position: center;
     filter: blur(6px);
@@ -129,6 +130,8 @@ body {
         transform: translateY(0);
     }
 }
+
+
 
 
 
