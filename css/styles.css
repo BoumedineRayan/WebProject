@@ -1,4 +1,4 @@
-/* Reset some basic styles */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +6,6 @@
     text-align: center;
 }
 
-/* Navbar container */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -61,14 +60,16 @@ body {
 .blurred-image-container {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 900px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .blurred-image-container::before {
     content: "";
     background-image: url('../assets/ima1.jpg');
-    /* replace with your image path */
     background-size: cover;
     background-position: center;
     filter: blur(6px);
@@ -80,23 +81,50 @@ body {
     z-index: 1;
 }
 
+.blurred-image-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+}
+
 .text-overlay {
     position: relative;
-    z-index: 2;
-    color: white;
+    z-index: 3;
     text-align: center;
-    padding-top: 150px;
-    font-family: Arial, sans-serif;
+    color: #f2f2f2;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 80%;
+    animation: fadeIn 1.5s ease-out;
 }
 
 .text-overlay h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #efedf5;
+
+    margin-bottom: 20px;
 }
 
 .text-overlay p {
-    font-size: 1.2rem;
-    text-align: center;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
