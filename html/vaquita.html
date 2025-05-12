@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+    
+    .vaquita-cards-section {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                padding: 2rem;
+                flex-wrap: wrap;
+            }
+            
+            .vaquita-card {
+                background-color: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                padding: 1.5rem;
+                max-width: 300px;
+                flex: 1 1 300px;
+            }
+            
+            .vaquita-img {
+                width: 100%;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+            }
+            
+            .info-card ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            
+            .info-card li {
+                margin: 0.5rem 0;
+            }
+            
+            .danger-card {
+                background-color: #ffe6e6;
+            }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../assets/logo.png" alt="Ocean Logo" class="logo-img">
+
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="species.html">Species</a></li>
+            <li><a href="menaces.html">Menaces</a></li>
+            <li><a href="biom.html">Ecosystems</a></li>
+        </ul>
+    </nav>
+</head>
+
+
+
+
+<body>
+    <div class="blurred-image-container" style="--bg-url: url('../assets/vaquita2.jpg');">
+        <div class="text-overlay">
+            <h1>Vaquita</h1>
+            
+        </div> 
+    </div>
+    <div class="vaquita-cards-section">
+        <div class="vaquita-card info-card">
+            <img src="../assets/vaquita.jpg" alt="Vaquita Image" class="vaquita-img">
+            <h2>Vaquita Facts</h2>
+            <ul>
+                <li><strong>Length:</strong> ~1.5 m (4.9 ft)</li>
+                <li><strong>Weight:</strong> ~50 kg (110 lbs)</li>
+                <li><strong>Lifespan:</strong> Up to 20–21 years</li>
+                <li><strong>Diet:</strong> Fish, squid, and crustaceans</li>
+                <li><strong>Habitat:</strong> Shallow coastal waters of the Northern Gulf of California</li>
+                <li><strong>Behavior:</strong> Shy and elusive; usually seen alone or in small groups</li>
+                <li><strong>Reproduction:</strong> One calf every two years</li>
+                <li><strong>Conservation status:</strong> Critically Endangered (IUCN Red List)</li>
+                <li><strong>Population:</strong> Fewer than 10 individuals (as of 2025)</li>
+            </ul>
+            
+        </div>
+    
+        <div class="vaquita-card danger-card">
+            <h2>Why is it endangered?</h2>
+            <p>
+The Vaquita is critically endangered, with fewer than 10 individuals remaining in the wild. Its main threat comes from accidental entanglement in illegal gillnets used to catch the totoaba fish, a species highly prized on the black market for its swim bladder. These gillnets are extremely dangerous, trapping not only totoaba but also any marine life that crosses their path, including the Vaquita. Despite efforts to ban and remove these nets, illegal fishing continues due to high demand and limited enforcement. In addition to bycatch, the Vaquita’s habitat—the northern part of the Gulf of California—is being degraded by pollution, reduced freshwater flow from the Colorado River, and human disturbance. The combination of these factors has pushed the Vaquita to the brink of extinction, making it one of the rarest and most threatened marine mammals on the planet.</p>
+        </div>
+    </div>
+    
+
+
+    
+</body>
+
+
+    
+
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-branding">
+            <p>Un projet de sensibilisation par <strong>Rayan</strong> & <strong>Youcef</strong></p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 OceanWatch. Tous droits réservés.</p>
+    </div>
+</footer>
+
+</html>
