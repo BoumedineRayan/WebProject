@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../css/styles.css">
+<style>
+    .vaquita-cards-section {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+        flex-wrap: wrap;
+        color: black;
+    }
+
+    .vaquita-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 1.5rem;
+        max-width: 300px;
+        flex: 1 1 300px;
+    }
+
+    .vaquita-img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .info-card ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .info-card li {
+        margin: 0.5rem 0;
+    }
+
+    .danger-card {
+        background-color: #ffe6e6;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leatherback Turtle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../assets/logo.png" alt="Ocean Logo" class="logo-img">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="species.html">Species</a></li>
+            <li><a href="menaces.html">Menaces</a></li>
+            <li><a href="biom.html">Ecosystems</a></li>
+        </ul>
+    </nav>
+</head>
+
+<body>
+    <div class="blurred-image-container" style="--bg-url: url('../assets/LTBturtle2.jpg');">
+        <div class="text-overlay">
+            <h1>Leatherback Turtle</h1>
+        </div>
+    </div>
+
+    <div class="vaquita-cards-section">
+        <div class="vaquita-card info-card">
+            <img src="../assets/LTBturtle.jpg" alt="Leatherback Turtle Image" class="vaquita-img">
+            <h2>Leatherback Turtle Facts</h2>
+            <ul>
+                <li><strong>Length:</strong> 1.8–2.2 m (6–7.2 ft)</li>
+                <li><strong>Weight:</strong> 250–700 kg (550–1500 lbs)</li>
+                <li><strong>Lifespan:</strong> 30–50 years or more</li>
+                <li><strong>Diet:</strong> Mainly jellyfish</li>
+                <li><strong>Habitat:</strong> Open oceans, tropical and subtropical waters</li>
+                <li><strong>Migration:</strong> One of the longest migratory species</li>
+                <li><strong>Nesting:</strong> Females lay eggs on sandy tropical beaches</li>
+                <li><strong>Conservation status:</strong> Vulnerable (globally), Critically Endangered (some populations)</li>
+                <li><strong>Shell type:</strong> Flexible, leathery shell (no hard scales)</li>
+            </ul>
+        </div>
+
+        <div class="vaquita-card danger-card">
+            <h2>Why is it endangered?</h2>
+            <p>
+The Leatherback Turtle faces a range of serious threats, both on land and in the ocean. One of the biggest dangers is plastic pollution—leatherbacks often mistake floating plastic bags for jellyfish, their primary food source. Ingesting plastic can block their digestive system and lead to starvation or death. They are also frequently caught accidentally in fishing gear such as longlines and trawls, a problem known as bycatch. On nesting beaches, coastal development, artificial lighting, and climate change reduce the number of safe nesting sites and disrupt hatchling orientation. Rising sand temperatures due to global warming may also affect sex ratios of hatchlings, threatening future reproduction. Poaching of eggs and habitat degradation further reduce their population. These combined human impacts have led to dramatic declines in several regional populations of this majestic ocean wanderer.
+            </p>
+        </div
