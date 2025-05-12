@@ -21,6 +21,109 @@
     </nav>
 </head>
 
+<body>
+    <div class="blurred-image-container" style="--bg-url: url('../assets/ima2.jpg');">
+        <div class="text-overlay">
+            <h1>Pacific Threats</h1>
+            <p>How much do we know about those dangers ?</p>
+        </div>
+    </div>
+
+
+    <h2 style="text-align: center; margin-top: 50px;">How Much Do You Know About Threats to Pacific Wildlife?</h2>
+    <div id="quiz-section" class="flex-section">
+        <!-- Question 1 -->
+        <div class="flex-card quiz-card" data-correct="C">
+            <h3>1. What causes coral bleaching?</h3>
+            <div class="quiz-options">
+                <button onclick="checkAnswer(this, 'A')">A) Oil spills</button>
+                <button onclick="checkAnswer(this, 'B')">B) Plastic ingestion</button>
+                <button onclick="checkAnswer(this, 'C')">C) Rising ocean temperatures</button>
+                <button onclick="checkAnswer(this, 'D')">D) Overfishing</button>
+            </div>
+        </div>
+    
+        <!-- Question 2 -->
+        <div class="flex-card quiz-card" data-correct="C">
+            <h3>2. What is a ghost net?</h3>
+            <div class="quiz-options">
+                <button onclick="checkAnswer(this, 'A')">A) A net used at night</button>
+                <button onclick="checkAnswer(this, 'B')">B) A biodegradable net</button>
+                <button onclick="checkAnswer(this, 'C')">C) Abandoned fishing gear</button>
+                <button onclick="checkAnswer(this, 'D')">D) A floating plastic sheet</button>
+            </div>
+        </div>
+    
+        <!-- Question 3 -->
+        <div class="flex-card quiz-card" data-correct="B">
+            <h3>3. Which activity most directly reduces fish populations?</h3>
+            <div class="quiz-options">
+                <button onclick="checkAnswer(this, 'A')">A) Coral bleaching</button>
+                <button onclick="checkAnswer(this, 'B')">B) Overfishing</button>
+                <button onclick="checkAnswer(this, 'C')">C) Oil spills</button>
+                <button onclick="checkAnswer(this, 'D')">D) Plastic pollution</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Score -->
+    <div style="text-align: center; margin: 20px;">
+        <button onclick="submitQuiz()" style="padding: 10px 20px; font-size: 1rem;">Submit Quiz</button>
+        <h3 id="quiz-score" style="margin-top: 15px;"></h3>
+    </div>
+
+
+</body>
+
+
+
+
+
+<script>
+    let score = 0;
+    let answered = 0;
+
+    function checkAnswer(button, selected) {
+        const card = button.closest('.quiz-card');
+        const correct = card.getAttribute('data-correct');
+
+        if (card.classList.contains('answered')) return;
+
+        const buttons = card.querySelectorAll('button');
+        buttons.forEach(btn => btn.disabled = true);
+
+        if (selected === correct) {
+            button.style.backgroundColor = '#4CAF50'; // green
+            score++;
+        } else {
+            button.style.backgroundColor = '#f44336'; // red
+            buttons.forEach(btn => {
+                if (btn.textContent.startsWith(correct)) {
+                    btn.style.backgroundColor = '#4CAF50';
+                }
+            });
+        }
+
+        card.classList.add('answered');
+        answered++;
+    }
+
+    function submitQuiz() {
+        const total = document.querySelectorAll('.quiz-card').length;
+        const scoreText = document.getElementById('quiz-score');
+
+        if (answered < total) {
+            scoreText.textContent = "Please answer all questions!";
+            scoreText.style.color = 'orange';
+            return;
+        }
+
+        scoreText.textContent = `You scored ${score} out of ${total}`;
+        scoreText.style.color = score === total ? 'green' : 'black';
+    }
+</script>
+
+
 <footer class="site-footer">
     <div class="footer-content">
         <div class="footer-branding">
