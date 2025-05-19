@@ -21,6 +21,8 @@
     </nav>
 </head>
 
+
+
 <body>
     <div class="blurred-image-container" style="--bg-url: url('../assets/ima2.jpg');">
         <div class="text-overlay">
@@ -28,6 +30,14 @@
             <p>How much do we know about those dangers ?</p>
         </div>
     </div>
+
+    <h2 style="text-align: center; margin-top: 50px;">Search Bar</h2>
+    <section id="search-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="🔍 Search species or threats..." />
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </section>
 
 
     <h2 style="text-align: center; margin-top: 50px;">How Much Do You Know About Threats to Pacific Wildlife?</h2>
@@ -73,6 +83,47 @@
     </div>
 
 
+
+    <script>
+        const searchPages = [
+            { name: "Home", url: "index.html" },
+            { name: "Species", url: "species.html" },
+            { name: "Menaces", url: "menaces.html" },
+            { name: "Pacific Threats", url: "biom.html" },
+            { name: "Dolphin", url: "Dolphin.html" },
+            { name: "Hammerhead", url: "Hammerhead.html" },
+            { name: "Napoleon", url: "Napoleon.html" },
+            { name: "Seal", url: "Seal.html" },
+            { name: "Sea Lion", url: "Sealion.html" },
+            { name: "Tuna", url: "Tuna.html" },
+            { name: "Vaquita", url: "vaquita.html" },
+            { name: "Leather Turtle", url: "LeatherTurtle.html" },
+            { name: "Staghorn Coral", url: "Staghorn.html" }
+        ];
+
+        const input = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('searchResults');
+
+        input.addEventListener('input', () => {
+            const query = input.value.toLowerCase();
+            resultsDiv.innerHTML = '';
+
+            if (query.length === 0) return;
+
+            const matches = searchPages.filter(page =>
+                page.name.toLowerCase().includes(query)
+            );
+
+            matches.forEach(page => {
+                const link = document.createElement('a');
+                link.href = page.url;
+                link.textContent = page.name;
+                resultsDiv.appendChild(link);
+            });
+        });
+    </script>
+
+
 </body>
 
 
@@ -93,10 +144,10 @@
         buttons.forEach(btn => btn.disabled = true);
 
         if (selected === correct) {
-            button.style.backgroundColor = '#4CAF50'; // green
+            button.style.backgroundColor = '#4CAF50';
             score++;
         } else {
-            button.style.backgroundColor = '#f44336'; // red
+            button.style.backgroundColor = '#f44336';
             buttons.forEach(btn => {
                 if (btn.textContent.startsWith(correct)) {
                     btn.style.backgroundColor = '#4CAF50';
