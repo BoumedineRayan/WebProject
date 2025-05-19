@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> <!-- Leaflet CDN BC MAP WASN4T GENERATING -->
 <style>
     
     .vaquita-cards-section {
@@ -41,6 +42,8 @@
             }
 </style>
 
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +61,29 @@
             <li><a href="biom.html">Pacific Threats</a></li>
         </ul>
     </nav>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+        }
+    
+        #map {
+            height: 700px;
+            max-width: 900px;
+            margin: 20px auto;
+            border: 3px solid #2c7fb8;
+            border-radius: 8px;
+        }
+    
+        #loading {
+            font-size: 18px;
+            color: #2c7fb8;
+        }
+    
+        </style>
 </head>
 
 
@@ -94,15 +120,61 @@
 The Vaquita is critically endangered, with fewer than 10 individuals remaining in the wild. Its main threat comes from accidental entanglement in illegal gillnets used to catch the totoaba fish, a species highly prized on the black market for its swim bladder. These gillnets are extremely dangerous, trapping not only totoaba but also any marine life that crosses their path, including the Vaquita. Despite efforts to ban and remove these nets, illegal fishing continues due to high demand and limited enforcement. In addition to bycatch, the Vaquita’s habitat—the northern part of the Gulf of California—is being degraded by pollution, reduced freshwater flow from the Colorado River, and human disturbance. The combination of these factors has pushed the Vaquita to the brink of extinction, making it one of the rarest and most threatened marine mammals on the planet.</p>
         </div>
     </div>
-    
 
+
+
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script>
+        const map = L.map('map').setView([30.5, -115], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const markers = L.markerClusterGroup();
+
+        fetch('https://api.inaturalist.org/v1/observations?taxon_id=41443&per_page=100&order=desc&order_by=observed_on')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.results.length) {
+                    document.getElementById('loading').textContent = 'No observations found for Vaquita.';
+                    return;
+                }
+
+                data.results.forEach(obs => {
+                    if (obs.geojson && obs.geojson.coordinates) {
+                        const [lng, lat] = obs.geojson.coordinates;
+                        const date = new Date(obs.observed_on).toLocaleDateString();
+                        const popup = `
+                <strong>${obs.species_guess || obs.name}</strong><br/>
+                Observed on: ${date}<br/>
+                <a href="${obs.uri}" target="_blank" rel="noopener noreferrer">View on iNaturalist</a>
+              `;
+                        const marker = L.marker([lat, lng]).bindPopup(popup);
+                        markers.addLayer(marker);
+                    }
+                });
+
+                map.addLayer(markers);
+
+                if (markers.getLayers().length > 0) {
+                    map.fitBounds(markers.getBounds().pad(0.5));
+                }
+
+                document.getElementById('loading').style.display = 'none';
+            })
+            .catch(err => {
+                document.getElementById('loading').textContent = 'Failed to load data. Please try again later.';
+                console.error('Fetch error:', err);
+            });
+    </script>
+    <!--Note a Youcef pour changer l'espece il faut changer ce que tu fetch donc le liens API de INaturalist faut faire la map pour chaques espece donc tu vas sur le site recup le liens et tu met a chaques fois-->
 
     
 </body>
-
-
-    
-
 
 <footer class="site-footer">
     <div class="footer-content">
