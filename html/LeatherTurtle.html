@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Leaflet CDN BC MAP WASN4T GENERATING -->
 <style>
     .vaquita-cards-section {
         display: flex;
@@ -38,6 +40,19 @@
     .danger-card {
         background-color: #ffe6e6;
     }
+
+    #map {
+            height: 700px;
+            max-width: 900px;
+            margin: 20px auto;
+            border: 3px solid #2c7fb8;
+            border-radius: 8px;
+        }
+    
+        #loading {
+            font-size: 18px;
+            color: #2c7fb8;
+        }
 </style>
 
 <head>
@@ -85,6 +100,75 @@
         <div class="vaquita-card danger-card">
             <h2>Why is it endangered?</h2>
             <p>
-The Leatherback Turtle faces a range of serious threats, both on land and in the ocean. One of the biggest dangers is plastic pollution—leatherbacks often mistake floating plastic bags for jellyfish, their primary food source. Ingesting plastic can block their digestive system and lead to starvation or death. They are also frequently caught accidentally in fishing gear such as longlines and trawls, a problem known as bycatch. On nesting beaches, coastal development, artificial lighting, and climate change reduce the number of safe nesting sites and disrupt hatchling orientation. Rising sand temperatures due to global warming may also affect sex ratios of hatchlings, threatening future reproduction. Poaching of eggs and habitat degradation further reduce their population. These combined human impacts have led to dramatic declines in several regional populations of this majestic ocean wanderer.
+            The Leatherback Turtle faces a range of serious threats, both on land and in the ocean. One of the biggest dangers is plastic pollution—leatherbacks often mistake floating plastic bags for jellyfish, their primary food source. Ingesting plastic can block their digestive system and lead to starvation or death. They are also frequently caught accidentally in fishing gear such as longlines and trawls, a problem known as bycatch. On nesting beaches, coastal development, artificial lighting, and climate change reduce the number of safe nesting sites and disrupt hatchling orientation. Rising sand temperatures due to global warming may also affect sex ratios of hatchlings, threatening future reproduction. Poaching of eggs and habitat degradation further reduce their population. These combined human impacts have led to dramatic declines in several regional populations of this majestic ocean wanderer.
             </p>
-        </div
+        </div>
+    </div>
+
+    <!-- API dev required-->
+    
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script>
+        const map = L.map('map').setView([30.5, -115], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const markers = L.markerClusterGroup();
+
+        fetch('https://api.inaturalist.org/v1/observations?taxon_id=39677&per_page=100&order=desc&order_by=observed_on')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.results.length) {
+                    document.getElementById('loading').textContent = 'No observations found for Vaquita.';
+                    return;
+                }
+
+                data.results.forEach(obs => {
+                    if (obs.geojson && obs.geojson.coordinates) {
+                        const [lng, lat] = obs.geojson.coordinates;
+                        const date = new Date(obs.observed_on).toLocaleDateString();
+                        const popup = `
+                    <strong>${obs.species_guess || obs.name}</strong><br/>
+                    Observed on: ${date}<br/>
+                    <a href="${obs.uri}" target="_blank" rel="noopener noreferrer">View on iNaturalist</a>
+                  `;
+                        const marker = L.marker([lat, lng]).bindPopup(popup);
+                        markers.addLayer(marker);
+                    }
+                });
+
+                map.addLayer(markers);
+
+                if (markers.getLayers().length > 0) {
+                    map.fitBounds(markers.getBounds().pad(0.5));
+                }
+
+                document.getElementById('loading').style.display = 'none';
+            })
+            .catch(err => {
+                document.getElementById('loading').textContent = 'Failed to load data. Please try again later.';
+                console.error('Fetch error:', err);
+            });
+    </script>
+    <!--Note a Youcef pour changer l'espece il faut changer ce que tu fetch donc le liens API de INaturalist faut faire la map pour chaques espece donc tu vas sur le site recup le liens et tu met a chaques fois-->
+
+    </body>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-branding">
+                <p>Un projet de sensibilisation par <strong>Rayan</strong> & <strong>Youcef</strong></p>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>&copy; 2025 OceanWatch. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    </html>
