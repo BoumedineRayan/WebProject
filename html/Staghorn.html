@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Leaflet CDN BC MAP WASN4T GENERATING -->
+<style>
+    .vaquita-cards-section {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2rem;
+        flex-wrap: wrap;
+        color: black;
+    }
+
+    .vaquita-card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 1.5rem;
+        max-width: 300px;
+        flex: 1 1 300px;
+    }
+
+    .vaquita-img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .info-card ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .info-card li {
+        margin: 0.5rem 0;
+    }
+
+    .danger-card {
+        background-color: #ffe6e6;
+    }
+
+    #map {
+        height: 700px;
+        max-width: 900px;
+        margin: 20px auto;
+        border: 3px solid #2c7fb8;
+        border-radius: 8px;
+    }
+
+    #loading {
+        font-size: 18px;
+        color: #2c7fb8;
+    }
+</style>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../assets/logo.png" alt="Ocean Logo" class="logo-img">
+
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="species.html">Species</a></li>
+            <li><a href="menaces.html">Menaces</a></li>
+            <li><a href="biom.html">Pacific Threats</a></li>
+        </ul>
+    </nav>
+</head>
+
+
+
+
+<body>
+    <div class="blurred-image-container" style="--bg-url: url('../assets/Staghorn2.jpg');">
+        <div class="text-overlay">
+            <h1>Staghron coral</h1>
+
+        </div>
+    </div>
+    <div class="vaquita-cards-section">
+        <div class="vaquita-card info-card">
+            <img src="../assets/Staghorn.jpg" alt="Vaquita Image" class="vaquita-img">
+            <h2>Staghorn coral Facts</h2>
+            <ul>
+                <li><strong>Length:</strong> Individual branches can grow up to 2 meters (6.6 ft) in diameter</li>
+                <li><strong>Weight:</strong> Not typically measured by weight; forms dense, branching colonies</li>
+                <li><strong>Lifespan:</strong> Colonies can live for decades if undisturbed</li>
+                <li><strong>Diet:</strong> Photosynthesis via symbiotic algae (zooxanthellae) and plankton capture</li>
+                <li><strong>Habitat:</strong> Shallow tropical reef environments in the Caribbean and western Atlantic</li>
+                <li><strong>Behavior:</strong> Fast-growing reef-building coral; forms dense thickets important for fish habitat
+                </li>
+                <li><strong>Reproduction:</strong> Asexual fragmentation and annual sexual spawning events</li>
+                <li><strong>Conservation status:</strong> Critically Endangered (IUCN Red List)</li>
+                <li><strong>Population:</strong> Drastically reduced; up to 98% decline since the 1980s</li>
+            </ul>
+        </div>
+
+        <div class="vaquita-card danger-card">
+            <h2>Why is it endangered?</h2>
+            <p>
+                Staghorn coral is critically endangered due to a combination of disease outbreaks, rising ocean temperatures, and
+                physical destruction from storms and human activity. Coral bleaching caused by climate change is a major threat,
+                weakening or killing the coral's symbiotic algae. Additional threats include pollution, overfishing (which disrupts
+                reef balance), and coastal development. Although restoration efforts such as coral gardening and marine protected
+                areas are underway, climate resilience and large-scale habitat protection are essential for long-term survival.</p>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- API dev required-->
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script>
+        const map = L.map('map').setView([30.5, -115], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const markers = L.markerClusterGroup();
+
+        fetch('https://api.inaturalist.org/v1/observations?taxon_id=93234&per_page=100&order=desc&order_by=observed_on')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.results.length) {
+                    document.getElementById('loading').textContent = 'No observations found for Vaquita.';
+                    return;
+                }
+
+                data.results.forEach(obs => {
+                    if (obs.geojson && obs.geojson.coordinates) {
+                        const [lng, lat] = obs.geojson.coordinates;
+                        const date = new Date(obs.observed_on).toLocaleDateString();
+                        const popup = `
+                <strong>${obs.species_guess || obs.name}</strong><br/>
+                Observed on: ${date}<br/>
+                <a href="${obs.uri}" target="_blank" rel="noopener noreferrer">View on iNaturalist</a>
+              `;
+                        const marker = L.marker([lat, lng]).bindPopup(popup);
+                        markers.addLayer(marker);
+                    }
+                });
+
+                map.addLayer(markers);
+
+                if (markers.getLayers().length > 0) {
+                    map.fitBounds(markers.getBounds().pad(0.5));
+                }
+
+                document.getElementById('loading').style.display = 'none';
+            })
+            .catch(err => {
+                document.getElementById('loading').textContent = 'Failed to load data. Please try again later.';
+                console.error('Fetch error:', err);
+            });
+    </script>
+    <!--Note a Youcef pour changer l'espece il faut changer ce que tu fetch donc le liens API de INaturalist faut faire la map pour chaques espece donc tu vas sur le site recup le liens et tu met a chaques fois-->
+
+
+</body>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-branding">
+            <p>Un projet de sensibilisation par <strong>Rayan</strong> & <strong>Youcef</strong></p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 OceanWatch. Tous droits réservés.</p>
+    </div>
+</footer>
+
+</html>
