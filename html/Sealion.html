@@ -71,7 +71,7 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="species.html">Species</a></li>
             <li><a href="menaces.html">Menaces</a></li>
-            <li><a href="biom.html">Pacific Threats</a></li>
+            <li><a href="biom.html">Quiz</a></li>
         </ul>
     </nav>
 </head>
@@ -134,6 +134,8 @@
 
         const markers = L.markerClusterGroup();
 
+        // fetching data from iNaturalist API 
+
         fetch('https://api.inaturalist.org/v1/observations?taxon_id=41755&per_page=100&order=desc&order_by=observed_on')
             .then(res => res.json())
             .then(data => {
@@ -141,11 +143,15 @@
                     document.getElementById('loading').textContent = 'No observations found for Vaquita.';
                     return;
                 }
+                
 
+                // looping in the result and adding markers to the map
                 data.results.forEach(obs => {
                     if (obs.geojson && obs.geojson.coordinates) {
                         const [lng, lat] = obs.geojson.coordinates;
                         const date = new Date(obs.observed_on).toLocaleDateString();
+
+                        // Builds an HTML popup for each observation
                         const popup = `
                 <strong>${obs.species_guess || obs.name}</strong><br/>
                 Observed on: ${date}<br/>
