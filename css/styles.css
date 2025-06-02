@@ -55,6 +55,8 @@
     text-align: center;
 }
 
+
+/* The media is weird I could not do it without changing the whole nav bar so I gave up on this */
 @media screen and (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -104,11 +106,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;  /* The thing to put it in full screen for the user Idk why it did not worked */
 }
 
 .blurred-image-container::before {
     content: "";
-    background-image: var(--bg-url, url('../assets/ima1.jpg')); /* fallback if not defined */
+    background-image: var(--bg-url, url('../assets/ima1.jpg'));
     background-size: cover;
     background-position: center;
     filter: blur(6px);
@@ -155,6 +158,8 @@ body {
     color: #ffffff;
 }
 
+
+/* cool effect */
 
 @keyframes fadeIn {
     0% {
